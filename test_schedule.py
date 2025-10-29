@@ -1243,7 +1243,7 @@ class SchedulerTests(TestCase):
         mock_job = make_mock_job()
         # 26 October 2025, 03:00:00 clocks were turned back 1 hour
         with mock_datetime(2025, 10, 26, 2, 58, second=40, fold=0):
-            job_object = every().minute.at(":30", tz='Europe/Madrid').do(mock_job)
+            job_object = every().minute.at(":30", tz="Europe/Madrid").do(mock_job)
         with mock_datetime(2025, 10, 26, 2, 59, second=40, fold=0):
             schedule.run_pending()
         assert job_object.next_run.hour == 2
@@ -1264,7 +1264,7 @@ class SchedulerTests(TestCase):
         mock_job = make_mock_job()
         # 26 October 2025, 03:00:00 clocks were turned back 1 hour
         with mock_datetime(2025, 10, 26, 1, 30, second=0, fold=0):
-            job_object = every().hour.at(":30", tz='Europe/Madrid').do(mock_job)
+            job_object = every().hour.at(":30", tz="Europe/Madrid").do(mock_job)
             assert job_object.next_run.hour == 2
             assert job_object.next_run.minute == 30
         with mock_datetime(2025, 10, 26, 2, 59, second=40, fold=0):

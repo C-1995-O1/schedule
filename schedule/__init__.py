@@ -794,7 +794,7 @@ class Job:
             last_execution_dst = self.last_run.dst()
             moment_dst = moment.dst()
             if last_execution_dst > moment_dst:
-                if self.unit in ['minutes', 'hours']:
+                if self.unit in ["minutes", "hours"]:
                     moment -= last_execution_dst - moment_dst
                     return moment
 
