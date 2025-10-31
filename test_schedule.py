@@ -1276,6 +1276,24 @@ class SchedulerTests(TestCase):
             assert job_object.next_run.hour == 3
             assert job_object.next_run.minute == 30
 
+    def test_fall_back_for_daylight_saving_time_5(self):
+        mock_job = make_mock_job()
+        # 26 October 2025, 03:00:00 clocks were turned back 1 hour
+        with mock_datetime(2025, 10, 26, 2, 59, second=52, fold=0):
+            job_object = every(5).seconds.with_time_zone(tz="Europe/Madrid").do(mock_job)
+        with mock_datetime(2025, 10, 26, 2, 59, second=59, fold=0):
+            schedule.run_pending()
+        assert job_object.next_run.hour == 2
+
+    def test_fall_back_for_daylight_saving_time_6(self):
+        mock_job = make_mock_job()
+        # 26 October 2025, 03:00:00 clocks were turned back 1 hour
+        with mock_datetime(2025, 10, 26, 2, 59, second=52, fold=1):
+            job_object = every(5).seconds.with_time_zone(tz="Europe/Madrid").do(mock_job)
+        with mock_datetime(2025, 10, 26, 2, 59, second=59, fold=1):
+            schedule.run_pending()
+        assert job_object.next_run.hour == 3
+
     def test_daylight_saving_time(self):
         mock_job = make_mock_job()
         # 27 March 2022, 02:00:00 clocks were turned forward 1 hour

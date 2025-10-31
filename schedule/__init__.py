@@ -468,6 +468,24 @@ class Job:
         self.tags.update(tags)
         return self
 
+    def with_time_zone(self, tz: str):
+        import pytz
+
+        if self.unit in ("days", "hours", "minutes"):
+            raise ScheduleValueError(
+                "Timezone should be defined in at()"
+            )
+
+        if isinstance(tz, str):
+            self.at_time_zone = pytz.timezone(tz)
+        elif isinstance(tz, pytz.BaseTzInfo):
+            self.at_time_zone = tz
+        else:
+            raise ScheduleValueError(
+                "Timezone must be string or pytz.timezone object"
+            )
+        return self
+
     def at(self, time_str: str, tz: Optional[str] = None):
         """
         Specify a particular time that the job should be run at.
