@@ -471,7 +471,7 @@ class Job:
     def with_time_zone(self, tz: str):
         import pytz
 
-        if self.unit in ("days", "hours", "minutes"):
+        if self.unit != "seconds":
             raise ScheduleValueError(
                 "Timezone should be defined in at()"
             )
